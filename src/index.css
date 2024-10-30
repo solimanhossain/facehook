@@ -43,4 +43,7 @@
     .action-menu-item {
         @apply flex w-full items-center gap-2 text-gray-100 transition-all;
     }
+    .auth-btn {
+        @apply font-bold text-deepDark transition-all hover:opacity-90;
+    }
 }
