@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import notifyLogo from "../assets/icons/notification.svg";
 import LogOut from "./auth/LogOut";
-import { useAuth } from "../hooks";
+import { useAuth, useProfile } from "../hooks";
+import notifyLogo from "../assets/icons/notification.svg";
 
 export default function Header() {
     const { auth } = useAuth();
-    const { user } = auth;
+    const { state } = useProfile();
+    let { firstName, lastName, avatar } = state?.user ?? auth?.user ?? {};
 
     return (
         <nav className="sticky top-0 z-50 border-b border-[#3F3F3F] bg-[#1E1F24] py-4">
@@ -32,13 +33,11 @@ export default function Header() {
                     >
                         <img
                             className="max-h-[30px] max-w-[30px] lg:max-h-[40px] lg:max-w-[40px] rounded-full border border-gray-600"
-                            src={`${import.meta.env.VITE_API_URL}/${
-                                user?.avatar
-                            }`}
+                            src={`${import.meta.env.VITE_API_URL}/${avatar}`}
                             alt="Avatar"
                         />
                         <span className="text-lg font-medium lg:text-xl">
-                            {user?.firstName} {user?.lastName}
+                            {firstName} {lastName}
                         </span>
                     </Link>
                 </div>

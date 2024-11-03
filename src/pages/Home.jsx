@@ -20,7 +20,9 @@ export default function HomePage() {
             <div className="container mx-8">
                 <CreatePost />
                 {posts &&
-                    posts.map((post) => <Post key={post.id} post={post} />)}
+                    posts.map((post) => (
+                        <Post key={post.id + post.createAt} post={post} />
+                    ))}
 
                 {error && <p>{error}</p>}
             </div>

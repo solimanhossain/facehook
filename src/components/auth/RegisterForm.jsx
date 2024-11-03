@@ -28,13 +28,8 @@ export default function RegisterForm() {
                 formData
             )}; path=/; max-age=86400`;
             navigate("/");
-        } catch (error) {
-            if (error?.code === "ERR_NETWORK") {
-                console.log(error);
-                return;
-            }
-            const { data } = error.response;
-            console.log(data.error);
+        } catch (err) {
+            console.error(`${err.code}: ${err.message}`);
         }
     }
     return (

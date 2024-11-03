@@ -39,6 +39,7 @@ export default function Post({ post }) {
             </header>
 
             <div className="border-b border-[#3F3F3F] py-4 lg:py-5 lg:text-xl">
+                <p className="p-4">{content}</p>
                 {image && (
                     <div className="flex items-center justify-center overflow-hidden">
                         <img
@@ -48,7 +49,6 @@ export default function Post({ post }) {
                         />
                     </div>
                 )}
-                <p className="p-4">{content}</p>
             </div>
 
             <PostActions

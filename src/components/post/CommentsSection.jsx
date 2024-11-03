@@ -35,7 +35,10 @@ export default function CommentsSection({ showCommentForm, comments }) {
             )}
             {comments &&
                 comments.map((comment) => (
-                    <Comments key={comment.id} commentData={comment} />
+                    <Comments
+                        key={comment.id + comment.comment}
+                        commentData={comment}
+                    />
                 ))}
         </div>
     );
