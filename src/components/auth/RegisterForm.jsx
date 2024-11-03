@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks";
-import { axiosAPI } from "../../api";
 import FiledSet from "./FiledSet";
+import { useForm } from "react-hook-form";
+import { axiosAPI } from "../../api";
 
-export default function LoginForm() {
+export default function RegisterForm() {
     const { setAuth } = useAuth();
     const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ export default function LoginForm() {
 
     async function handleSubmitForm(formData) {
         try {
-            const { data } = await axiosAPI.post("/auth/login", formData);
+            const { data } = await axiosAPI.post("/auth/register", formData);
             const { user, token } = data;
             setAuth({
                 user,
@@ -24,9 +24,9 @@ export default function LoginForm() {
                 refreshToken: token?.refreshToken,
             });
 
-            // document.cookie = `facehookData=${JSON.stringify(
-            //     formData
-            // )}; path=/; max-age=86400`;
+            document.cookie = `facehookData=${JSON.stringify(
+                formData
+            )}; path=/; max-age=86400`;
             navigate("/");
         } catch (error) {
             if (error?.code === "ERR_NETWORK") {
@@ -37,12 +37,45 @@ export default function LoginForm() {
             console.log(data.error);
         }
     }
-
     return (
         <form
             className="border-b border-[#3F3F3F] pb-10 lg:pb-[60px]"
             onSubmit={handleSubmit(handleSubmitForm)}
         >
+            <div className="grid grid-cols-2 gap-4">
+                <FiledSet
+                    label="First Name"
+                    htmlFor="firstName"
+                    error={errors?.firstName?.message}
+                >
+                    <input
+                        {...register("firstName", {
+                            required: "Name is required!",
+                        })}
+                        className="auth-input"
+                        name="firstName"
+                        type="text"
+                        id="firstName"
+                    />
+                </FiledSet>
+
+                <FiledSet
+                    label="Last Name"
+                    htmlFor="lastName"
+                    error={errors?.lastName?.message}
+                >
+                    <input
+                        {...register("lastName", {
+                            required: "Name is required!",
+                        })}
+                        className="auth-input"
+                        name="lastName"
+                        type="text"
+                        id="lastName"
+                    />
+                </FiledSet>
+            </div>
+
             <FiledSet
                 label="Email"
                 htmlFor="email"
@@ -77,8 +110,11 @@ export default function LoginForm() {
                 />
             </FiledSet>
 
-            <button className="auth-input auth-btn bg-lwsGreen" type="submit">
-                Login
+            <button
+                className="auth-input bg-lwsGreen font-bold text-deepDark transition-all hover:opacity-90"
+                type="submit"
+            >
+                Register
             </button>
         </form>
     );

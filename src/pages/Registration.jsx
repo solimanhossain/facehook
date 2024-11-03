@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import facehookIllustration from "../assets/images/illustration.png";
-import LoginForm from "../components/auth/LoginForm";
+import RegisterForm from "../components/auth/RegisterForm";
 import { useAuth } from "../hooks";
 
-export default function LoginPage() {
+export default function RegistrationPage() {
     const { auth } = useAuth();
     const navigate = useNavigate();
     if (auth?.user) {
@@ -31,15 +31,15 @@ export default function LoginPage() {
                     </div>
                 </div>
                 <div className="card">
-                    <LoginForm />
+                    <RegisterForm />
                     <div className="py-4 lg:py-6">
                         <p className="text-center text-xs text-gray-600/95 lg:text-sm">
-                            {"Don't have account? "}
+                            {"Already have an account? "}
                             <Link
                                 className="text-white transition-all hover:text-lwsGreen hover:underline"
-                                to="/registration"
+                                to="/login"
                             >
-                                Register
+                                Login
                             </Link>
                         </p>
                     </div>

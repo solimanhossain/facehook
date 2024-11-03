@@ -37,11 +37,11 @@
     }
 
     .action-modal-container {
-        @apply card absolute right-full top-6 min-w-[200px] divide-y divide-[#3F3F3F] py-2 [&>button]:py-2;
+        @apply card absolute right-full top-6 min-w-[150px] divide-y divide-[#3F3F3F] py-2 [&>button]:py-2;
     }
 
     .action-menu-item {
-        @apply flex w-full items-center gap-2 text-gray-100 transition-all;
+        @apply flex w-full items-center justify-end gap-2 text-gray-100 transition-all;
     }
     .auth-btn {
         @apply font-bold text-deepDark transition-all hover:opacity-90;
