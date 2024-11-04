@@ -7,18 +7,18 @@ import Bio from "../components/profile/Bio";
 import Image from "../components/profile/Image";
 
 export default function ProfilePage() {
-    const { state, dispatch } = useProfile({});
-    const { auth } = useAuth();
+    const {
+        auth: { user },
+    } = useAuth();
     const { axiosAPI } = useAxios();
+    const { state, dispatch } = useProfile();
 
     useEffect(() => {
         dispatch({ type: actions.profile.DATA_FETCH_ERROR, error: null });
         dispatch({ type: actions.profile.DATA_FETCHING });
         async function fetchProfile() {
             try {
-                const { data } = await axiosAPI.get(
-                    `/profile/${auth?.user?.id}`
-                );
+                const { data } = await axiosAPI.get(`/profile/${user?.id}`);
                 dispatch({ type: actions.profile.DATA_FETCHED, data });
             } catch (err) {
                 dispatch({
@@ -48,7 +48,7 @@ export default function ProfilePage() {
                     </div>
                 )}
 
-                {state?.posts && (
+                {state?.posts.length > 0 && (
                     <>
                         <h4 className="bg-lighterDark text-center p-8  border border-[#3F3F3F] rounded-lg mt-6 lg:mt-8 text-2xl font-bold lg:text-4xl">
                             Your Posts

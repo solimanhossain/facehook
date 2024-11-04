@@ -1,14 +1,18 @@
 import { useState } from "react";
+import { useAuth } from "../hooks";
 import EditActions from "./post/EditActions";
 import PostActions from "./post/PostActions";
 import timeLogo from "../assets/icons/time.svg";
 import CommentsSection from "./post/CommentsSection";
+import { formatToUTC } from "../utils/dateFormat";
 
 export default function Post({ post }) {
+    const {
+        auth: { user },
+    } = useAuth();
     const [showCommentForm, setShowCommentForm] = useState("hidden");
 
-    const { author, createAt, content, image, likes, comments } = post;
-    const postAt = new Date(createAt).toLocaleString();
+    const { id, author, createAt, content, image, likes, comments } = post;
     const { avatar, name } = author;
 
     function handleCommentForm() {
@@ -29,13 +33,12 @@ export default function Post({ post }) {
                         <div className="flex items-center gap-1.5">
                             <img src={timeLogo} alt="time" />
                             <span className="text-sm text-gray-400 lg:text-base">
-                                {postAt}
+                                {formatToUTC(createAt)}
                             </span>
                         </div>
                     </div>
                 </div>
-
-                <EditActions />
+                {author?.id === user?.id && <EditActions postId={id} />}
             </header>
 
             <div className="border-b border-[#3F3F3F] py-4 lg:py-5 lg:text-xl">
@@ -52,12 +55,16 @@ export default function Post({ post }) {
             </div>
 
             <PostActions
-                likes={likes.length}
+                postId={id}
+                likes={likes}
+                userId={user?.id}
                 comments={comments.length}
                 showHideCommentForm={handleCommentForm}
             />
 
             <CommentsSection
+                user={user}
+                postId={id}
                 showCommentForm={showCommentForm}
                 comments={comments}
             />

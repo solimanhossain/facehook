@@ -5,6 +5,7 @@ import ErrorPage from "./pages/Error";
 import LoginPage from "./pages/Login";
 import Protected from "./Protected";
 import HomePage from "./pages/Home";
+import EditPost from "./components/post/EditPost";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
             {
                 path: "/profile",
                 element: <ProfilePage />,
+            },
+            {
+                path: "/edit/:postId",
+                element: <EditPost />,
             },
         ],
     },

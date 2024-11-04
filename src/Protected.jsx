@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { useAuth } from "./hooks";
 import ProfileProvider from "./providers/ProfileProvider";
+import PostProvider from "./providers/PostProvider";
 
 export default function Protected() {
     const { auth } = useAuth();
@@ -12,10 +13,12 @@ export default function Protected() {
         return <Navigate to="/login" />;
     }
     return (
-        <ProfileProvider>
-            <Header />
-            <Outlet />
-            <Footer />
-        </ProfileProvider>
+        <PostProvider>
+            <ProfileProvider>
+                <Header />
+                <Outlet />
+                <Footer />
+            </ProfileProvider>
+        </PostProvider>
     );
 }

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import LogOut from "./auth/LogOut";
 import { useAuth, useProfile } from "../hooks";
 import notifyLogo from "../assets/icons/notification.svg";
+import Avatar from "./profile/Avatar";
 
 export default function Header() {
     const { auth } = useAuth();
@@ -31,11 +32,18 @@ export default function Header() {
                         to="/profile"
                         className="flex-center !ml-5 gap-3 w-[120px]"
                     >
-                        <img
-                            className="max-h-[30px] max-w-[30px] lg:max-h-[40px] lg:max-w-[40px] rounded-full border border-gray-600"
-                            src={`${import.meta.env.VITE_API_URL}/${avatar}`}
-                            alt="Avatar"
-                        />
+                        {avatar ? (
+                            <img
+                                className="max-h-[30px] max-w-[30px] lg:max-h-[40px] lg:max-w-[40px] rounded-full border border-gray-600"
+                                src={`${
+                                    import.meta.env.VITE_API_URL
+                                }/${avatar}`}
+                                alt="Avatar"
+                            />
+                        ) : (
+                            <Avatar word={firstName} />
+                        )}
+
                         <span className="text-lg font-medium lg:text-xl">
                             {firstName} {lastName}
                         </span>

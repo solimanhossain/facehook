@@ -1,10 +1,24 @@
-import { useAuth } from "../../hooks";
-import Comments from "./Comments";
+import { useState } from "react";
+import Comment from "./Comment";
+import { useAxios } from "../../hooks";
 
-export default function CommentsSection({ showCommentForm, comments }) {
-    const {
-        auth: { user },
-    } = useAuth();
+export default function CommentsSection({
+    user,
+    postId,
+    showCommentForm,
+    comments,
+}) {
+    const [allComments, setAllComments] = useState(comments);
+    const { axiosAPI } = useAxios();
+    const [commentText, setCommentText] = useState("");
+
+    async function handleAddComment() {
+        axiosAPI
+            .patch(`/posts/${postId}/comment`, { comment: commentText })
+            .then((res) => setAllComments(res?.data?.comments))
+            .catch((err) => console.error(err));
+        setCommentText("");
+    }
 
     return (
         <div className={showCommentForm}>
@@ -17,29 +31,36 @@ export default function CommentsSection({ showCommentForm, comments }) {
 
                 <div className="flex-1">
                     <input
-                        type="text"
-                        className="h-8 w-full rounded-full bg-lighterDark px-4 text-xs focus:outline-none sm:h-[38px]"
-                        name="post"
                         id="post"
+                        type="text"
+                        name="post"
+                        value={commentText}
                         placeholder="What's on your mind?"
+                        onChange={(e) => setCommentText(e.target.value)}
+                        className="h-8 w-full rounded-full bg-lighterDark px-4 text-xs focus:outline-none sm:h-[38px]"
                     />
                 </div>
-                <button className="icon-btn px-2">Comment</button>
+                <button onClick={handleAddComment} className="icon-btn px-2">
+                    Comment
+                </button>
             </div>
-            {comments.length > 0 && (
-                <div className="mt-4">
-                    <button className="text-gray-300 max-md:text-sm">
-                        All Comment ▾
-                    </button>
-                </div>
+            {allComments.length > 0 && (
+                <>
+                    <div className="mt-4">
+                        <button className="text-gray-300 max-md:text-sm">
+                            All Comment ▾
+                        </button>
+                    </div>
+                    {allComments.map((comment) => (
+                        <Comment
+                            postId={postId}
+                            userId={user?.id}
+                            comment={comment}
+                            key={comment.id + comment?.comment}
+                        />
+                    ))}
+                </>
             )}
-            {comments &&
-                comments.map((comment) => (
-                    <Comments
-                        key={comment.id + comment.comment}
-                        commentData={comment}
-                    />
-                ))}
         </div>
     );
 }
