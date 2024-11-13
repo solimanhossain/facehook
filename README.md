@@ -12,6 +12,23 @@ npm run dev
 
 ---
 
+You can create account or use test account :
+
+Email: `soliman@email.com`
+Password: `test@123`
+
+---
+
+_Get ***[(API File)](https://github.com/solimanhossain/facehook/tree/main/backend-api)*** and run in http://localhost:3000/ before runing this project_. Follow Api [documentation](https://documenter.getpostman.com/view/9649334/2s9YyvBL56) to manage backend server.
+
+```
+cd facehook/backend-api
+yarn
+yarn dev
+```
+
+---
+
 <br>
 
 -   These project is done by myself ([Soliman Hossain](https://github.com/solimanhossain/)).

@@ -5,6 +5,7 @@ import PostActions from "./post/PostActions";
 import timeLogo from "../assets/icons/time.svg";
 import CommentsSection from "./post/CommentsSection";
 import { formatToUTC } from "../utils/dateFormat";
+import Avatar from "./profile/Avatar";
 
 export default function Post({ post }) {
     const {
@@ -23,11 +24,15 @@ export default function Post({ post }) {
         <article className="card mt-6 lg:mt-8">
             <header className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <img
-                        className="max-w-10 max-h-10 rounded-full lg:max-h-[58px] lg:max-w-[58px]"
-                        src={import.meta.env.VITE_API_URL + "/" + avatar}
-                        alt="avatar"
-                    />
+                    {avatar ? (
+                        <img
+                            className="max-w-10 max-h-10 rounded-full lg:max-h-[58px] lg:max-w-[58px]"
+                            src={import.meta.env.VITE_API_URL + "/" + avatar}
+                            alt="avatar"
+                        />
+                    ) : (
+                        <Avatar word={name} />
+                    )}
                     <div>
                         <h6 className="text-lg lg:text-xl">{name}</h6>
                         <div className="flex items-center gap-1.5">

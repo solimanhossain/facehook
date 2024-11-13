@@ -1,12 +1,22 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks";
+import { useAuth, useCookie } from "../../hooks";
 import FiledSet from "./FiledSet";
 import { useForm } from "react-hook-form";
 import { axiosAPI } from "../../api";
+import { toast } from "sonner";
+import { useEffect } from "react";
+import { userDataFormat } from "../../utils/userDataFormat";
 
 export default function RegisterForm() {
-    const { setAuth } = useAuth();
+    const { auth, setAuth } = useAuth();
     const navigate = useNavigate();
+    const { setAuthCookie } = useCookie("facehookUserData");
+
+    useEffect(() => {
+        if (auth?.user) {
+            navigate("/profile");
+        }
+    }, [auth, navigate]);
 
     const {
         register,
@@ -17,19 +27,12 @@ export default function RegisterForm() {
     async function handleSubmitForm(formData) {
         try {
             const { data } = await axiosAPI.post("/auth/register", formData);
-            const { user, token } = data;
-            setAuth({
-                user,
-                authToken: token?.token,
-                refreshToken: token?.refreshToken,
-            });
-
-            document.cookie = `facehookData=${JSON.stringify(
-                formData
-            )}; path=/; max-age=86400`;
+            setAuth(userDataFormat(data));
+            setAuthCookie(userDataFormat(data));
+            toast.success("Registered successfully");
             navigate("/");
         } catch (err) {
-            console.error(`${err.code}: ${err.message}`);
+            toast.error(`${err.code}: ${err.message}`);
         }
     }
     return (

@@ -4,6 +4,8 @@ import { useAxios } from "../../hooks";
 import { useEffect, useState } from "react";
 import { formatToUTC } from "../../utils/dateFormat";
 import closeLogo from "../../assets/icons/close.svg";
+import { toast } from "sonner";
+import Avatar from "../profile/Avatar";
 
 export default function EditPost() {
     const {
@@ -21,14 +23,20 @@ export default function EditPost() {
         axiosAPI
             .get("/posts/" + postId)
             .then((res) => setPost(res?.data))
-            .catch((err) => console.error(err));
+            .catch((err) => toast.error(`${err.code}: ${err.message}`));
     }, []);
 
     async function handleEditPost(formData) {
         axiosAPI
             .patch("/posts/" + postId, formData)
-            .then(() => navigate("/"))
-            .catch((err) => setError(err));
+            .then(() => {
+                toast.success("Post updated successfully");
+                navigate("/");
+            })
+            .catch((err) => {
+                setError(err);
+                toast.error(`${err.code}: ${err.message}`);
+            });
     }
 
     return (
@@ -48,15 +56,19 @@ export default function EditPost() {
                     <form onSubmit={handleSubmit(handleEditPost)}>
                         <div className="mb-3 flex items-center justify-between gap-2 lg:mb-6 lg:gap-4">
                             <div className="flex items-center gap-3">
-                                <img
-                                    className="max-w-10 max-h-10 rounded-full lg:max-h-[58px] lg:max-w-[58px]"
-                                    src={
-                                        import.meta.env.VITE_API_URL +
-                                        "/" +
-                                        post?.author?.avatar
-                                    }
-                                    alt="avatar"
-                                />
+                                {post?.author?.avatar ? (
+                                    <img
+                                        className="max-w-10 max-h-10 rounded-full lg:max-h-[58px] lg:max-w-[58px]"
+                                        src={
+                                            import.meta.env.VITE_API_URL +
+                                            "/" +
+                                            post?.author?.avatar
+                                        }
+                                        alt="avatar"
+                                    />
+                                ) : (
+                                    <Avatar />
+                                )}
                                 <div>
                                     <h6 className="text-lg lg:text-xl">
                                         {post?.author?.name}

@@ -3,6 +3,7 @@ import { actions } from "../../actions";
 import editLogo from "../../assets/icons/edit.svg";
 import saveLogo from "../../assets/icons/save.svg";
 import { useAxios, useProfile } from "../../hooks";
+import { toast } from "sonner";
 
 export default function Bio() {
     const [open, setOpen] = useState(false);
@@ -18,13 +19,15 @@ export default function Bio() {
                 `/profile/${state?.user?.id}`,
                 { bio }
             );
-            dispatch({ type: actions.profile.DATA_UPDATED, data });
+            dispatch({ type: actions.profile.DATA_POSTED, data });
             setBio(data?.bio);
+            toast.success("Bio updated successfully");
         } catch (err) {
             dispatch({
                 type: actions.profile.DATA_FETCH_ERROR,
                 error: `${err.code}: ${err.message}`,
             });
+            toast.error(`${err.code}: ${err.message}`);
         }
     }
 

@@ -4,6 +4,7 @@ import commentLogo from "../../assets/icons/comment.svg";
 import shareLogo from "../../assets/icons/share.svg";
 import { useState } from "react";
 import { useAxios } from "../../hooks";
+import { toast } from "sonner";
 
 export default function PostActions({
     postId,
@@ -31,7 +32,7 @@ export default function PostActions({
                 likeCount: data?.likeCount,
             });
         } catch (err) {
-            console.log(err);
+            toast.error(`${err.code}: ${err.message}`);
         }
     }
 

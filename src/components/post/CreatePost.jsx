@@ -1,24 +1,29 @@
 import { useState } from "react";
-import { useAuth } from "../../hooks";
+import { useAuth, useProfile } from "../../hooks";
 import PostEntry from "./PostEntry";
+import Avatar from "../profile/Avatar";
 
 export default function CreatePost() {
     const [show, setShow] = useState(false);
-    const {
-        auth: { user },
-    } = useAuth();
+    const { auth } = useAuth();
+    const { state } = useProfile();
+    const avatar = state?.user?.avatar ?? auth?.user?.avatar;
 
     return (
         <div className="card transition-all">
             {show ? (
-                <PostEntry user={user} onPost={() => setShow(false)} />
+                <PostEntry user={auth?.user} onPost={() => setShow(false)} />
             ) : (
                 <div className="flex-center mb-3 gap-2 lg:gap-4">
-                    <img
-                        className="max-w-10 max-h-10 rounded-full lg:max-h-[58px] lg:max-w-[58px]"
-                        src={import.meta.env.VITE_API_URL + "/" + user.avatar}
-                        alt="avatar"
-                    />
+                    {avatar ? (
+                        <img
+                            className="max-w-10 max-h-10 rounded-full lg:max-h-[58px] lg:max-w-[58px]"
+                            src={import.meta.env.VITE_API_URL + "/" + avatar}
+                            alt="avatar"
+                        />
+                    ) : (
+                        <Avatar word={auth?.user?.firstName} />
+                    )}
 
                     <div className="flex-1">
                         <textarea

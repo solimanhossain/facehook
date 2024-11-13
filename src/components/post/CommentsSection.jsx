@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Comment from "./Comment";
 import { useAxios } from "../../hooks";
+import { Toaster } from "sonner";
 
 export default function CommentsSection({
     user,
@@ -16,7 +17,7 @@ export default function CommentsSection({
         axiosAPI
             .patch(`/posts/${postId}/comment`, { comment: commentText })
             .then((res) => setAllComments(res?.data?.comments))
-            .catch((err) => console.error(err));
+            .catch((err) => Toaster.error(`${err.code}: ${err.message}`));
         setCommentText("");
     }
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAxios } from "../../hooks";
 import { formatToUTC } from "../../utils/dateFormat";
 import deleteLogo from "../../assets/icons/delete.svg";
+import { toast } from "sonner";
 
 export default function Comment({ comment, userId, postId }) {
     const [cross, setCross] = useState("");
@@ -9,10 +10,10 @@ export default function Comment({ comment, userId, postId }) {
     async function handleCommentDelete() {
         axiosAPI
             .delete(`/posts/${postId}/comment/${comment?.id}`)
-            .then((res) => {
-                console.log(res?.data);
+            .then((_) => {
+                toast.success("Comment deleted successfully");
             })
-            .catch((err) => console.error(err));
+            .catch((err) => toast.error(`${err.code}: ${err.message}`));
     }
 
     return (

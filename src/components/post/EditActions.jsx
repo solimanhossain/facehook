@@ -5,6 +5,7 @@ import { useAxios, usePosts } from "../../hooks";
 import { useState } from "react";
 import { actions } from "../../actions";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function EditActions({ postId }) {
     const [showModal, setShowModal] = useState("hidden");
@@ -19,15 +20,19 @@ export default function EditActions({ postId }) {
     }
 
     async function handleDeletePost() {
-        axiosAPI
-            .delete("posts/" + postId)
-            .then(
-                (_res) => dispatch({ type: actions.post.DATA_DELETED, postId }),
-                navigate("/")
-            )
-            .catch((error) =>
-                dispatch({ type: actions.post.DATA_FETCH_ERROR, error })
-            );
+        if (window.confirm("Are you sure you want to delete this post?")) {
+            axiosAPI
+                .delete("posts/" + postId)
+                .then((_) => {
+                    dispatch({ type: actions.post.DATA_DELETED, postId });
+                    toast.warning("Post deleted successfully");
+                    navigate("/");
+                })
+                .catch((error) => {
+                    dispatch({ type: actions.post.DATA_FETCH_ERROR, error });
+                    toast.error(`${error.code}: ${error.message}`);
+                });
+        }
     }
 
     return (

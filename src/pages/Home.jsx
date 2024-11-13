@@ -3,6 +3,7 @@ import { actions } from "../actions";
 import Post from "../components/Post";
 import { useAxios, usePosts } from "../hooks";
 import CreatePost from "../components/post/CreatePost";
+import { toast } from "sonner";
 
 export default function HomePage() {
     const { state, dispatch } = usePosts();
@@ -19,13 +20,20 @@ export default function HomePage() {
                     type: actions.post.DATA_FETCH_ERROR,
                     error: `${err.code}: ${err.message}`,
                 });
+                toast.error(`${err.code}: ${err.message}`);
             }
         }
         fetchPost();
     }, []);
 
     if (state?.loading) {
-        return <div>Loading</div>;
+        return (
+            <main className="mx-auto max-w-[1020px] py-8">
+                <div className="container h-[calc(100vh-15rem)] flex items-center justify-center">
+                    <img src="/loading.gif" alt="loading" />
+                </div>
+            </main>
+        );
     }
 
     return (
@@ -36,8 +44,6 @@ export default function HomePage() {
                     state?.posts.map((post) => (
                         <Post key={post.id + post.createAt} post={post} />
                     ))}
-
-                {/* {error && <p>{error}</p>} */}
             </div>
         </main>
     );

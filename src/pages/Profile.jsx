@@ -5,6 +5,7 @@ import Post from "../components/Post";
 import { useAuth, useProfile } from "../hooks";
 import Bio from "../components/profile/Bio";
 import Image from "../components/profile/Image";
+import { toast } from "sonner";
 
 export default function ProfilePage() {
     const {
@@ -25,6 +26,7 @@ export default function ProfilePage() {
                     type: actions.profile.DATA_FETCH_ERROR,
                     error: `${err.code}: ${err.message}`,
                 });
+                toast.error(`${err.code}: ${err.message}`);
             }
         }
         fetchProfile();

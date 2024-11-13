@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { actions } from "../../actions";
 import addImg from "../../assets/icons/addImg.svg";
 import { useAxios, useProfile } from "../../hooks";
+import { toast } from "sonner";
 
 export default function Image() {
     const { state, dispatch } = useProfile();
@@ -29,11 +30,13 @@ export default function Image() {
                     type: actions.profile.IMAGE_UPDATED,
                     avatar: data?.avatar,
                 });
+                toast.success("Image updated successfully");
             } catch (err) {
                 dispatch({
                     type: actions.profile.DATA_FETCH_ERROR,
                     error: `${err.code}: ${err.message}`,
                 });
+                toast.error(`${err.code}: ${err.message}`);
             }
         }
         fileOpenRef.current.click();
@@ -41,11 +44,19 @@ export default function Image() {
 
     return (
         <div className="relative mb-4 max-h-[150px] max-w-[150px] rounded-full lg:mb-8 lg:max-h-[200px] lg:max-w-[200px]">
-            <img
-                className="max-w-full rounded-full border-4 border-gray-400 lg:rounded-3xl"
-                src={`${import.meta.env.VITE_API_URL}/${state?.user?.avatar}`}
-                alt="avatar"
-            />
+            {state?.user?.avatar ? (
+                <img
+                    className="max-w-full rounded-full border-4 border-gray-400 lg:rounded-3xl"
+                    src={`${import.meta.env.VITE_API_URL}/${
+                        state?.user?.avatar
+                    }`}
+                    alt="avatar"
+                />
+            ) : (
+                <div className="bg-lwsGreen flex-center h-[150px] w-[150px] text-6xl font-bold rounded-full border-4 border-gray-400 lg:rounded-3xl">
+                    {state?.user?.firstName[0] ?? state?.user?.name[0]}
+                </div>
+            )}
             <form action="">
                 <button
                     onClick={handleImageUpload}
